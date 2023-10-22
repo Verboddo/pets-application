@@ -34,8 +34,6 @@ $(document).ready(function(){
                 success: (response) => {
                     console.log(response);
                     $('.pet-table-container').html(response.html);
-
-                    resetUrlParameters();
                 },
                 error: (response) => {
                     let errorMessages = [];
@@ -57,15 +55,9 @@ $(document).ready(function(){
         e.preventDefault();
 
         var url = $(this).data('url');
-        var id = $(this).data('id');
+        var object = $(this);
 
-        // Maak een JavaScript-object
-        let formData = {
-            id: id,
-        };
-
-        // Converteer het object naar JSON
-        let jsonData = JSON.stringify(formData);
+        console.log(url);
 
         $.ajaxSetup({
             headers: {
@@ -77,14 +69,11 @@ $(document).ready(function(){
                 type:'DELETE',
                 url: url,
                 dataType: 'json',
-                data: jsonData,
                 processData: false,
                 contentType: 'application/json',
                 success: (response) => {
                     console.log(response);
-                    $('.pet-table-container').html(response.html);
-
-                    resetUrlParameters();
+                    object.parents("tr").remove();
                 },
                 error: (response) => {
                     let errorMessages = [];
@@ -101,9 +90,4 @@ $(document).ready(function(){
             }
         });
     });
-
-    function resetUrlParameters() {
-        var url= document.location.href;
-        window.history.pushState({}, "", url.split("?")[0]);
-    }
 });

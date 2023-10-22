@@ -30,10 +30,6 @@
 
                     </tbody>
                 </table>
-                <!-- Toon de paginering -->
-                @if ($pets->lastPage() > 1)
-                {{ $pets->links() }}
-                @endif
             </div>
         </div>
     </div>

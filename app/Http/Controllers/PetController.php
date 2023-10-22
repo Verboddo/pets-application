@@ -10,7 +10,7 @@ class PetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('pages.pets.index', $this->getPets());
     }
@@ -70,28 +70,23 @@ class PetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Pets $pets)
     {
-        $pets = Pets::find($request->id);
         $pets->delete();
 
-        $returnHTML = view('tables.table-view')->with($this->getPets())->render();
-
-        return response()->json(array('success' => true, 'html'=>$returnHTML));
-
-        // return response()->json(['success'=>'Pet succesvol verwijderd!']);
+        return response()->json(['success'=>'Pet succesvol verwijderd!']);
     }
 
     public function getPets() {
-        $pets = Pets::orderBy('name')->paginate(15);
+        $pets = Pets::orderBy('name')->get();
 
         $counted = $pets->countBy(function ($type) {
             return $type->type;
         });
 
-        $data = response()->json($pets->items());
+        $data = response()->json($pets);
         $counted = response()->json($counted->all());
 
-        return ['data' => $data, 'counted' => $counted, 'pets' => $pets];
+        return ['data' => $data, 'counted' => $counted];
     }
 }

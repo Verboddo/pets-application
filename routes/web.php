@@ -28,9 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/pets', [PetController::class, 'store'])->name('pet.store');
+    Route::post('/pet/store', [PetController::class, 'store'])->name('pet.store');
     Route::get('/pets', [PetController::class, 'index'])->name('pets');
-    Route::delete('/pets', [PetController::class, 'destroy'])->name('pet.delete');
+    Route::delete('/pets/{pets}', [PetController::class, 'destroy'])->name('pet.delete');
 });
 
 require __DIR__.'/auth.php';
