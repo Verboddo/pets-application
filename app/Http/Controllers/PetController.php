@@ -74,7 +74,10 @@ class PetController extends Controller
     {
         $pets->delete();
 
-        return response()->json(['success'=>'Pet succesvol verwijderd!']);
+        $returnHTML = view('tables.table-view')->with($this->getPets())->render();
+
+        return response()->json(array('success' => true, 'html'=>$returnHTML));
+        // return response()->json(['success'=>'Pet succesvol verwijderd!']);
     }
 
     public function getPets() {

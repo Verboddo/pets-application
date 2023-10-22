@@ -55,7 +55,7 @@ $(document).ready(function(){
         e.preventDefault();
 
         var url = $(this).data('url');
-        var object = $(this);
+        // var object = $(this);
 
         console.log(url);
 
@@ -73,7 +73,8 @@ $(document).ready(function(){
                 contentType: 'application/json',
                 success: (response) => {
                     console.log(response);
-                    object.parents("tr").remove();
+                    // object.parents("tr").remove();
+                    $('.pet-table-container').html(response.html);
                 },
                 error: (response) => {
                     let errorMessages = [];
