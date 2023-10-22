@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PetController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('pets', 'PetsController');
+    Route::post('/pets', [PetController::class, 'store'])->name('pet.store');
+    Route::get('/pets', [PetController::class, 'index'])->name('pets');
+    Route::delete('/pets', [PetController::class, 'destroy'])->name('pet.delete');
 });
 
 require __DIR__.'/auth.php';
