@@ -41,10 +41,10 @@ This README provides instructions on how to set up the Pets Application, a web a
 9. Start the local development server with:
    ```bash
    php artisan serve
-   
+
 10. Compile the frontend assets with:
-   ```bash
-   npm run dev
+    ```bash
+    npm run dev
 
 ## Login Credentials
 
