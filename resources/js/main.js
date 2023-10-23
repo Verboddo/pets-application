@@ -2,8 +2,8 @@ $(document).ready(function(){
     $('#pet-form').on('submit', function(e) {
         e.preventDefault();
 
-        var url = $(this).attr('action');
         // Haal gegevens op uit het formulier
+        var url = $(this).attr('action');
         let name = $(this).find('#name').val();
         let type = $(this).find('#type').val();
         let address = $(this).find('#address').val();
@@ -32,7 +32,6 @@ $(document).ready(function(){
                 processData: false,
                 contentType: 'application/json',
                 success: (response) => {
-                    console.log(response);
                     $('.pet-table-container').html(response.html);
                 },
                 error: (response) => {
@@ -55,9 +54,6 @@ $(document).ready(function(){
         e.preventDefault();
 
         var url = $(this).data('url');
-        // var object = $(this);
-
-        console.log(url);
 
         $.ajaxSetup({
             headers: {
@@ -72,8 +68,6 @@ $(document).ready(function(){
                 processData: false,
                 contentType: 'application/json',
                 success: (response) => {
-                    console.log(response);
-                    // object.parents("tr").remove();
                     $('.pet-table-container').html(response.html);
                 },
                 error: (response) => {
@@ -90,5 +84,28 @@ $(document).ready(function(){
                     }
             }
         });
+    });
+
+    function loadUsers(page) {
+        $.ajax({
+            url: '/get-pets?page=' + page,
+            method: 'GET',
+            success: function(response) {
+                $('.pet-table-container').html(response.html);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    // Initial load
+    loadUsers(1);
+
+    // Voeg event listeners toe voor paginaklikken
+    $('body').on('click', '[aria-label="Pagination Navigation"] a', function(e) {
+        e.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        loadUsers(page);
     });
 });

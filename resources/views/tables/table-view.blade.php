@@ -27,9 +27,12 @@
                             </td>
                         </tr>
                         @endforeach
-
                     </tbody>
                 </table>
+
+                @if ($pets->lastPage() > 1)
+                {{ $pets->links() }}
+                @endif
             </div>
         </div>
     </div>

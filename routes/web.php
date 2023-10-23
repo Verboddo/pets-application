@@ -28,9 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/pet/store', [PetController::class, 'store'])->name('pet.store');
-    Route::get('/pets', [PetController::class, 'index'])->name('pets');
-    Route::delete('/pets/{pets}', [PetController::class, 'destroy'])->name('pet.delete');
+
+    Route::controller(PetController::class)->group(function () {
+        Route::post('/pet/store', 'store')->name('pet.store');
+        Route::get('/pets', 'index')->name('pets');
+        Route::delete('/pets/{pets}', 'destroy')->name('pet.delete');
+        Route::get('/get-pets', 'getPetsPagination');
+    });
 });
 
 require __DIR__.'/auth.php';

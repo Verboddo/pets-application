@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Pets;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PetSeeder extends Seeder
@@ -13,6 +12,6 @@ class PetSeeder extends Seeder
      */
     public function run(): void
     {
-        Pets::factory()->count(20)->create();
+        Pets::factory()->count(50)->create();
     }
 }

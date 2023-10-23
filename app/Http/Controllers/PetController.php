@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Pets;
 use Illuminate\Http\Request;
+use App\Http\Requests\PetStoreRequest;
 
 class PetController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         return view('pages.pets.index', $this->getPets());
     }
@@ -26,13 +27,9 @@ class PetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PetStoreRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255|regex:/^[\pL\s\-]+$/u',
-            'address' => 'required|max:255|regex:/^[\pL\s\-]+$/u',
-            'type' => 'required|max:255|regex:/^[\pL\s\-]+$/u',
-        ]);
+        $validated = $request->validated();
 
         $pet = Pets::create($validated);
 
@@ -77,19 +74,27 @@ class PetController extends Controller
         $returnHTML = view('tables.table-view')->with($this->getPets())->render();
 
         return response()->json(array('success' => true, 'html'=>$returnHTML));
-        // return response()->json(['success'=>'Pet succesvol verwijderd!']);
     }
 
     public function getPets() {
-        $pets = Pets::orderBy('name')->get();
+        $pets = Pets::orderBy('name')->paginate(15);
 
-        $counted = $pets->countBy(function ($type) {
+        $petsTypeCount = Pets::orderBy('name')->get();
+
+        $counted = $petsTypeCount->countBy(function ($type) {
             return $type->type;
         });
 
-        $data = response()->json($pets);
+        $data = response()->json($pets->items());
         $counted = response()->json($counted->all());
 
-        return ['data' => $data, 'counted' => $counted];
+        return ['data' => $data, 'counted' => $counted, 'pets' => $pets->withPath('/pets')];
+    }
+
+    public function getPetsPagination()
+    {
+        $returnHTML = view('tables.table-view')->with($this->getPets())->render();
+
+        return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
 }
